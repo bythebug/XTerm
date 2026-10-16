@@ -35,7 +35,7 @@ struct XTermApp: App {
             }
             CommandGroup(after: .toolbar) {
                 Button("Bigger") { fontSize = min(fontSize + 1, 28) }
-                    .keyboardShortcut("=")
+                    .keyboardShortcut("+") // matches ⌘= too
                 Button("Smaller") { fontSize = max(fontSize - 1, 9) }
                     .keyboardShortcut("-")
                 Button("Actual Size") { fontSize = 13 }

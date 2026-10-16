@@ -20,6 +20,18 @@ final class Pane: LocalProcessTerminalView {
         selectedTextBackgroundColor = .controlAccentColor.withAlphaComponent(0.35)
         applySettings()
 
+        // Right-click menu, like Terminal.app. Targets self so it acts on the pane you clicked.
+        let menu = NSMenu()
+        for (title, action, key) in [
+            ("Copy", #selector(copy(_:)), "c"), ("Paste", #selector(paste(_:)), "v"),
+            ("Select All", #selector(selectAll(_:)), "a"), ("", nil, ""),
+            ("Split Right", #selector(splitRight), "d"), ("Split Down", #selector(splitDown), "D"),
+        ] as [(String, Selector?, String)] {
+            guard let action else { menu.addItem(.separator()); continue }
+            menu.addItem(withTitle: title, action: action, keyEquivalent: key).target = self
+        }
+        self.menu = menu
+
         let shell = ProcessInfo.processInfo.environment["SHELL"] ?? "/bin/zsh"
         // execName "-zsh" makes it a login shell, same as Terminal.app.
         startProcess(executable: shell, execName: "-" + (shell as NSString).lastPathComponent,
@@ -66,6 +78,15 @@ final class Pane: LocalProcessTerminalView {
         split.adjustSubviews()
         split.setPosition((vertical ? split.bounds.width : split.bounds.height) / 2, ofDividerAt: 0)
         window?.makeFirstResponder(pane)
+    }
+
+    @objc private func splitRight() { split(vertical: true) }
+    @objc private func splitDown() { split(vertical: false) }
+
+    // SwiftTerm disables menu actions it doesn't know about.
+    override func validateUserInterfaceItem(_ item: NSValidatedUserInterfaceItem) -> Bool {
+        if item.action == #selector(splitRight) || item.action == #selector(splitDown) { return true }
+        return super.validateUserInterfaceItem(item)
     }
 
     /// Removes this pane; the last pane in a window closes the window.

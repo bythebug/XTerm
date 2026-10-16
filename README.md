@@ -26,8 +26,9 @@ Update with `brew upgrade --cask xterm-glass`.
 |---|---|
 | ⌘N / ⌘T | New window / new tab, opened in the current folder |
 | ⌘D / ⇧⌘D | Split right / split down (`exit` closes a pane) |
-| ⌘= / ⌘- / ⌘0 | Bigger / smaller / actual size text |
-| ⌘, | Settings: theme, font, size, glass background |
+| ⌘+ / ⌘- / ⌘0 | Bigger / smaller / actual size text |
+| ⌘, | Settings: theme, font, size, glass background, restore defaults |
+| Right-click | Copy, Paste, Select All, Split Right, Split Down |
 
 Themes: **Glass** (follows light/dark mode), **Midnight**, **Paper**, **High Contrast**. Also in View → Theme.
 
