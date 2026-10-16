@@ -18,6 +18,21 @@ XTerm isn't notarized by Apple yet, so the first launch is blocked. Allow it onc
 xattr -dr com.apple.quarantine /Applications/XTerm.app
 ```
 
+Update with `brew upgrade --cask xterm-glass`.
+
+## Features
+
+| Shortcut | Action |
+|---|---|
+| ⌘N / ⌘T | New window / new tab, opened in the current folder |
+| ⌘D / ⇧⌘D | Split right / split down (`exit` closes a pane) |
+| ⌘= / ⌘- / ⌘0 | Bigger / smaller / actual size text |
+| ⌘, | Settings: theme, font, size, glass background |
+
+Themes: **Glass** (follows light/dark mode), **Midnight**, **Paper**, **High Contrast**. Also in View → Theme.
+
+The terminal bell (`printf '\a'`) flashes the glass instead of beeping. Try `make; printf '\a'` to get a flash when a long command finishes.
+
 ## Build from source
 
 Needs Xcode 26+.
@@ -28,12 +43,24 @@ swift run          # run it directly
 cp -R XTerm.app /Applications/
 ```
 
+Release a new version (builds, publishes the GitHub release, updates the Homebrew cask):
+
+```sh
+./release.sh 0.3
+```
+
 ## How it works
 
-- `Sources/XTerm/XTermApp.swift` — the window: hidden title bar, glass edge to edge.
-- `Sources/XTerm/GlassTerminal.swift` — native `NSGlassEffectView` behind a transparent [SwiftTerm](https://github.com/migueldeicaza/SwiftTerm) terminal, plus the color palette. Tweak `tintColor` for more or less glass.
-- `bundle.sh` — packages the `.app` with its icon and Info.plist.
+- `Sources/XTerm/XTermApp.swift` — windows, menus and shortcuts.
+- `Sources/XTerm/GlassTerminal.swift` — native `NSGlassEffectView` window background.
+- `Sources/XTerm/Pane.swift` — one transparent [SwiftTerm](https://github.com/migueldeicaza/SwiftTerm) shell; splitting and closing panes.
+- `Sources/XTerm/Settings.swift` — themes and the Settings window.
+- `bundle.sh` / `release.sh` — package and publish the app.
 
 ## Credits
 
 Developed by Suraj Van Verma. Terminal emulation by [SwiftTerm](https://github.com/migueldeicaza/SwiftTerm) (MIT).
+
+## License
+
+[MIT](LICENSE)
