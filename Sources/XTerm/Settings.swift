@@ -73,6 +73,10 @@ struct SettingsView: View {
             Slider(value: $glass, in: 0...0.9) {
                 Text("Background")
             } minimumValueLabel: { Text("Clear") } maximumValueLabel: { Text("Solid") }
+            Button("Restore Defaults") {
+                // Removing the keys falls back to the values in Prefs.register().
+                [Prefs.theme, Prefs.fontFamily, Prefs.fontSize, Prefs.glass].forEach(UserDefaults.standard.removeObject)
+            }
         }
         .formStyle(.grouped)
         .frame(width: 440)
